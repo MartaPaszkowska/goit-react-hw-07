@@ -1,0 +1,4 @@
+// src/redux/selectors.js
+
+export const selectContacts = (state) => state.contacts.items;
+export const selectFilter = (state) => state.filters.name;
