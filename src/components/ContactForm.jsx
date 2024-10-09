@@ -4,6 +4,20 @@ import { addContact } from "../redux/operations";
 import css from "../css/ContactForm.module.css";
 import * as Yup from "yup";
 
+const formatPhoneNumber = (value) => {
+	if (!value) return value;
+	const phoneNumber = value.replace(/[^\d]/g, ""); // Usuń wszystkie znaki niebędące cyframi
+	const phoneNumberLength = phoneNumber.length;
+	if (phoneNumberLength < 4) return phoneNumber;
+	if (phoneNumberLength < 7) {
+		return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+	}
+	return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(
+		3,
+		6
+	)}-${phoneNumber.slice(6, 10)}`;
+};
+
 const validationSchema = Yup.object({
 	name: Yup.string()
 		.min(3, "Too short")
@@ -47,9 +61,13 @@ export default function ContactForm() {
 						className={css.phoneInput}
 						value={values.phone}
 						onChange={(e) => {
-							setFieldValue("phone", e.target.value);
+							const formattedPhoneNumber = formatPhoneNumber(
+								e.target.value
+							);
+							setFieldValue("phone", formattedPhoneNumber);
 						}}
 					/>
+
 					<ErrorMessage name="phone" component="div" />
 
 					<button type="submit">Add Contact</button>
