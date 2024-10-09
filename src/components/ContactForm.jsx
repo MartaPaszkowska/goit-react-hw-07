@@ -1,19 +1,18 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import * as Yup from "yup";
-import { addContact } from "../redux/contactsSlice";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { addContact } from "../redux/operations";
 import css from "../css/ContactForm.module.css";
+import * as Yup from "yup";
 
 const validationSchema = Yup.object({
 	name: Yup.string()
-		.matches(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces")
 		.min(3, "Too short")
 		.max(50, "Too long")
 		.required("Required"),
-	number: Yup.string()
+	phone: Yup.string()
 		.matches(
-			/^[0-9\-]{7,}$/,
-			"Number must contain at least 7 digits and may include dashes"
+			/^\d{3}-\d{3}-\d{4}$/,
+			"Invalid phone number format (e.g. 123-456-7890)"
 		)
 		.required("Required"),
 });
@@ -23,22 +22,35 @@ export default function ContactForm() {
 
 	return (
 		<Formik
-			initialValues={{ name: "", number: "" }}
+			initialValues={{ name: "", phone: "" }}
 			validationSchema={validationSchema}
 			onSubmit={(values, { resetForm }) => {
 				dispatch(addContact(values));
 				resetForm();
 			}}
 		>
-			{() => (
+			{({ values, setFieldValue }) => (
 				<Form className={css.formContainer}>
 					<label htmlFor="name">Name</label>
-					<Field type="text" name="name" />
+					<Field
+						type="text"
+						name="name"
+						placeholder="John Kowalski"
+					/>
 					<ErrorMessage name="name" component="div" />
 
-					<label htmlFor="number">Number</label>
-					<Field type="text" name="number" />
-					<ErrorMessage name="number" component="div" />
+					<label htmlFor="phone">Number</label>
+					<Field
+						type="text"
+						name="phone"
+						placeholder="123-456-7890"
+						className={css.phoneInput}
+						value={values.phone}
+						onChange={(e) => {
+							setFieldValue("phone", e.target.value);
+						}}
+					/>
+					<ErrorMessage name="phone" component="div" />
 
 					<button type="submit">Add Contact</button>
 				</Form>
