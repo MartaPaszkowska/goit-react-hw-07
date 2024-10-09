@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 const formatPhoneNumber = (value) => {
 	if (!value) return value;
-	const phoneNumber = value.replace(/[^\d]/g, ""); // Usuń wszystkie znaki niebędące cyframi
+	const phoneNumber = value.replace(/[^\d]/g, "");
 	const phoneNumberLength = phoneNumber.length;
 	if (phoneNumberLength < 4) return phoneNumber;
 	if (phoneNumberLength < 7) {
