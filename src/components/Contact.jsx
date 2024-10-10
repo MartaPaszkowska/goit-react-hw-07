@@ -5,7 +5,7 @@ export default function Contact({ contact, onDelete }) {
 		<li className={css.contactItem}>
 			<div>
 				<p>{contact.name}</p>
-				<p>{contact.number}</p>
+				<p>{contact.phone}</p>
 			</div>
 			<button onClick={() => onDelete(contact.id)}>Delete</button>
 		</li>
