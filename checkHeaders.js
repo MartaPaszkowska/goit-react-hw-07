@@ -1,13 +1,10 @@
-const https = require("https");
-const httpHeaders = require("http-headers");
+import axios from "axios";
 
-const url = "https://mockapi.io/endpoint"; // Zamień na swój adres MockAPI
-
-https
-	.get(url, (res) => {
-		const headers = httpHeaders(res);
-		console.log("Nagłówki odpowiedzi:", headers);
+axios
+	.get("https://670656a4a0e04071d2266a12.mockapi.io/contacts")
+	.then((response) => {
+		console.log("Nagłówki odpowiedzi:", response.headers);
 	})
-	.on("error", (e) => {
-		console.error("Błąd:", e.message);
+	.catch((error) => {
+		console.error("Błąd:", error);
 	});
