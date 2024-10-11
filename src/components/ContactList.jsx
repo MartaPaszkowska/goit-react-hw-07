@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContact } from "../redux/operations";
 import {
@@ -15,6 +16,12 @@ export default function ContactList() {
 	const filter = useSelector(selectFilter);
 	const loading = useSelector(selectLoading);
 	const error = useSelector(selectError);
+
+	useEffect(() => {
+		if (contacts.length === 0) {
+			dispatch(fetchContacts());
+		}
+	}, [dispatch, contacts.length]);
 
 	const filteredContacts = Array.isArray(contacts)
 		? contacts.filter((contact) =>
